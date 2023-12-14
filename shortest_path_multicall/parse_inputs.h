@@ -13,16 +13,16 @@
 #ifdef USE_OPENFHE
 #pragma message "using openFHE"
 
-#include "palisade/binfhe/binfhecontext.h"
-#include "palisade/binfhe/lwecore.h"
+#include "openfhe/binfhe/binfhecontext.h"
+
 //using namespace lbcrypto;
 #endif
 
 void parse_inputs(int argc, char **argv, bool &simple_cost_flag,
                   bool &constrained_flag, bool &verbose,
 #ifdef USE_OPENFHE
-                  lbcrypto::BINFHEPARAMSET &param_set, lbcrypto::BINFHEMETHOD &method,
-				  std::string &param_set_name, std::string &method_name,
+                  lbcrypto::BINFHE_PARAMSET &param_set,
+				  std::string &param_set_name, 
 #endif
                   unsigned int n_neighbors, std::string &out_fname);
 

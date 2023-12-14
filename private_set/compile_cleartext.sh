@@ -1,5 +1,5 @@
 #!/bin/bash
-
+mkdir -p private_set/bin
 for target in cleartext yosys_interpreted_cleartext 
 do
 	echo ===================================

@@ -166,16 +166,3 @@ cc_binary(
         "@com_google_xls//xls/common/status:status_macros",
     ],
 )
-
-#compile and link google tests.
-
-#cc_test(
-#    name = "shortest_path_test",
-#    srcs = ["shortest_path_test.cc"],
-#    deps = [
-#        ":shortest_path",
-#        ":create_cost_vector",
-#        "@com_google_googletest//:gtest_main",
-#        "@com_google_xls//xls/common/status:matchers",
-#    ],
-#)

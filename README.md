@@ -1,7 +1,11 @@
 # Duality Labs Transpiler Experiments 
-This body of code are examples of encrypted network control fuctions
-developed under DARPA funding for the I2O Open, Programmable, Secure
-5G (OPS5G) program.
+
+This body of code contains examples of encrypted network measurement
+and control fuctions developed under DARPA funding for the I2O Open,
+Programmable, Secure 5G (OPS5G) program.  They represent distributed
+set operations that would be performed among a group of nodes in a
+path, a simple BGP-like shortest path calculation, and a dijkstra
+shortest path computation for a small network.
 
 ## Acknowledgements and Distribution 
 
@@ -72,7 +76,7 @@ links to the right project directories (i.e. `shortest_path`) within
 the `examples` subdirectory of the docker image of the transpiler
 tree, every time you run the docker image (as it resets).
 
-# Sub-projects
+# Network Measurement/Control Sub-projects
 
 In general each of these subprojects can generate cleartext (with and
 without yosys interpreted mode) and openfhe executables (with and
@@ -116,17 +120,19 @@ Note running the following will list all possible command line arguments
 `bazel run //transpiler/examples/shortest_path:shortest_path_yosys_interpreted_openfhe_testbench -- -h`
 
 
-## private_set [verified]
+## Private Set Processing Along a Path [verified]
 
-This is an implementation of private_set processing along a chain of
-network nodes -- performs intersection or union on a vector of data
+This is an implementation of private set processing along a chain of
+network nodes. It performs intersection or union on a vector of data
 coming into a node with another vector supplied by the node. The
 result is passed on to the next neighboring node in a path. The number
-
-of nodes is a command line parameter.  There is no I/O, only
+of nodes simulated is a command line parameter.  There is no I/O, only
 computation is benchmarked.
 
-The maximum vector length `MAX_SET_LEN` is specified in `private_set.h` and is currently set to 20. Reducing this will bring faster compile and run times.
+The maximum vector length `MAX_SET_LEN` is specified in
+`private_set.h` and is currently set to 20. Reducing this will result
+in faster compile and run times. Increasing it may create problems
+with compilation. YMMV.
 
 If an intersecton causes the resulting vector's length to exceed
 `MAX_SET_LEN`, an overflow flag is set to true.
@@ -201,10 +207,6 @@ install the equivalent version of openFHE on your system.
 This is an implementation of the Dijkstra shortest path
 algorithm. Note this code has a hardwired network, and hardwired
 source node and is basically a proof of concept. Note in the future we will release a dijkstra version that can run with 100s of nodes.
-
-## aes [not yet moved over from private repo]
-
-This is a port of the tiny-AES-C code to the Google transpiler. It has not yet been moved to this repository
 
 # Todo
 

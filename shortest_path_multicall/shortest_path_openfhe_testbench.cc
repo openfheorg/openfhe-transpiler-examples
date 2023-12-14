@@ -59,15 +59,13 @@ int main(int argc, char** argv) {
   unsigned int n_neighbors(MAX_NEIGHBORS);
   std::string out_fname;
   lbcrypto::BINFHE_PARAMSET param_set;
-  lbcrypto::BINFHE_METHOD method;
   std::string param_set_name;
-  std::string method_name;
   
   TimeVar t;					// for timing
   double execTime(0.0);
 
   parse_inputs(argc, argv, simpleCostFlag, constrainedFlag, verbose,
-               param_set, method, param_set_name, method_name,
+               param_set, param_set_name,
                n_neighbors, out_fname);
   
   //note currently n_neighbors is not used
@@ -85,18 +83,18 @@ int main(int argc, char** argv) {
     cerr << out_fname+".siz" << " file open exception was caught, with message '" << e.what() << "'\n";
   }
 
-  outfile << "\"param\",\"method\",\"constrainedFlag\",\"simpleCostFlag\",\"Create cost vector\",\"Create constrained cost vector\",\"Vector min\",\"Select path\",\"Path advertisement\" " << endl;
+  outfile << "\"param\",\"constrainedFlag\",\"simpleCostFlag\",\"Create cost vector\",\"Create constrained cost vector\",\"Vector min\",\"Select path\",\"Path advertisement\" " << endl;
 
-  outfile << param_set_name << "," << method_name << "," << constrainedFlag << "," << simpleCostFlag << ",";
+  outfile << param_set_name << "," << constrainedFlag << "," << simpleCostFlag << ",";
 
-  sizeoutfile << "Using BinFHE "<<param_set_name <<", " << method_name <<endl;
+  sizeoutfile << "Using BinFHE "<<param_set_name << endl;
   //generate FHE context and keys 
   if (verbose) {
-    cout<< "Using BinFHE "<<param_set_name <<", " << method_name <<endl;
+    cout<< "Using BinFHE "<<param_set_name <<endl;
   }
 
   auto cc = BinFHEContext();
-  cc.GenerateBinFHEContext(param_set, method); //strictly for debugging
+  cc.GenerateBinFHEContext(param_set); //strictly for debugging
 
   std::cout << "Generating the secret key..." << std::endl;
   auto sk = cc.KeyGen();		// Generate the secret key

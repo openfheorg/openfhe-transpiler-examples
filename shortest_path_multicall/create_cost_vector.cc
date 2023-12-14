@@ -17,7 +17,7 @@
 
 #pragma hls_top
 void create_cost_vector(const PathStruct paths[MAX_NEIGHBORS], unsigned int costVec[MAX_NEIGHBORS]){
-  #pragma hls_unroll yes    
+  #pragma hls_unroll yes
   for (unsigned char i = 0; i < MAX_NEIGHBORS; i++){
 	costVec[i] = paths[i].cost;
   }

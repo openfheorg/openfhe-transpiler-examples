@@ -25,7 +25,7 @@ void vector_min_index(unsigned int a[MAX_NEIGHBORS], unsigned char& index) {
 
   unsigned int min = a[0];
   index = 0;
-  #pragma hls_unroll yes    
+  #pragma hls_unroll yes
   for (unsigned char i = 1; i < MAX_NEIGHBORS; i++){
 	if (a[i] < min) {
 	  min = a[i];

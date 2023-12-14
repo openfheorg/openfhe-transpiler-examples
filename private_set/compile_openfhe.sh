@@ -1,5 +1,5 @@
 #!/bin/bash
-
+mkdir -p private_set/bin
 for target in yosys_interpreted_openfhe interpreted_openfhe # note openfhe segfaults the compiler.
 do
 	echo ===================================
