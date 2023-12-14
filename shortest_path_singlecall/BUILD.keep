@@ -1,0 +1,182 @@
+load("//transpiler:fhe.bzl", "fhe_cc_library")
+
+licenses(["notice"])
+
+#define the transpiled function sources
+
+cc_library(
+    name = "create_cost_vector",
+    srcs = ["create_cost_vector.cc"],
+    hdrs = [
+		 "shortest_path.h",
+		 "create_cost_vector.h",
+		 ],
+)
+
+cc_library(
+    name = "vector_min",
+    srcs = ["vector_min.cc"],
+    hdrs = [
+		 "shortest_path.h",
+		 "vector_min.h",
+		 ],
+)
+
+#compile transpiled function objects
+
+fhe_cc_library(
+    name = "create_cost_vector_openfhe",
+    src = "create_cost_vector.cc",
+    hdrs = [
+		 "shortest_path.h",
+		 "create_cost_vector.h",
+		 ],
+    encryption = "openfhe",
+    num_opt_passes = 2,
+    optimizer = "xls",
+)
+
+fhe_cc_library(
+    name = "vector_min_openfhe",
+    src = "vector_min.cc",
+    hdrs = [
+		 "shortest_path.h",
+		 "vector_min.h",
+		 ],
+    encryption = "openfhe",
+    num_opt_passes = 2,
+    optimizer = "xls",
+)
+
+
+fhe_cc_library(
+    name = "create_cost_vector_interpreted_openfhe",
+    src = "create_cost_vector.cc",
+    hdrs = [
+	 	  "shortest_path.h",
+	 	  "create_cost_vector.h",
+	 ],
+    encryption = "openfhe",
+    interpreter = True,
+    num_opt_passes = 2,
+    optimizer = "xls",
+)
+
+fhe_cc_library(
+    name = "vector_min_interpreted_openfhe",
+    src = "vector_min.cc",
+    hdrs = [
+	 	  "shortest_path.h",
+	 	  "vector_min.h",
+	 ],
+    encryption = "openfhe",
+    interpreter = True,
+    num_opt_passes = 2,
+    optimizer = "xls",
+)
+
+fhe_cc_library(
+    name = "create_cost_vector_cleartext",
+    src = "create_cost_vector.cc",
+    hdrs = [
+		 "shortest_path.h",
+		 "create_cost_vector.h",
+		 ],
+    encryption = "cleartext",
+    num_opt_passes = 2,
+    optimizer = "xls",
+)
+
+fhe_cc_library(
+    name = "vector_min_cleartext",
+    src = "vector_min.cc",
+    hdrs = [
+		 "shortest_path.h",
+		 "vector_min.h",
+		 ],
+    encryption = "cleartext",
+    num_opt_passes = 2,
+    optimizer = "xls",
+)
+
+#compile and line executables
+
+cc_binary(
+    name = "shortest_path_tfhe_testbench",
+    srcs = ["shortest_path_tfhe_testbench.cc"],
+    deps = [
+        ":shortest_path_tfhe",
+        "//transpiler/data:tfhe_data",
+        "@com_google_xls//xls/common/logging",
+        "@com_google_xls//xls/common/status:status_macros",
+        "@tfhe//:libtfhe",
+    ],
+)
+
+cc_binary(
+    name = "shortest_path_interpreted_tfhe_testbench",
+    srcs = ["shortest_path_tfhe_testbench.cc"],
+    copts = ["-DUSE_INTERPRETED_TFHE"],
+    deps = [
+        ":shortest_path_interpreted_tfhe",
+        "//transpiler/data:tfhe_data",
+        "@com_google_xls//xls/common/logging",
+        "@com_google_xls//xls/common/status:status_macros",
+        "@tfhe//:libtfhe",
+    ],
+)
+
+cc_binary(
+    name = "shortest_path_openfhe_testbench",
+    srcs = ["shortest_path_openfhe_testbench.cc"],
+    deps = [
+        ":shortest_path_openfhe",
+		":create_cost_vector_openfhe",
+		":vector_min_openfhe",
+		":vector_min_index_openfhe",
+        "//transpiler/data:openfhe_data",
+        "@com_google_xls//xls/common/logging",
+        "@com_google_xls//xls/common/status:status_macros",
+        "@openfhe//:binfhe",
+    ],
+)
+
+cc_binary(
+    name = "shortest_path_interpreted_openfhe_testbench",
+    srcs = ["shortest_path_openfhe_testbench.cc"],
+    copts = ["-DUSE_INTERPRETED_OPENFHE"],
+    deps = [
+        ":shortest_path_interpreted_openfhe",
+        ":create_cost_vector_interpreted_openfhe",
+        ":vector_min_interpreted_openfhe",
+        ":vector_min_index_interpreted_openfhe",
+        "//transpiler/data:openfhe_data",
+        "@com_google_xls//xls/common/logging",
+        "@com_google_xls//xls/common/status:status_macros",
+        "@openfhe//:binfhe",
+    ],
+)
+
+cc_binary(
+    name = "shortest_path_cleartext_testbench",
+    srcs = ["shortest_path_cleartext_testbench.cc"],
+    deps = [
+        ":create_cost_vector_cleartext",
+        "//transpiler/data:boolean_data",
+        "@com_google_xls//xls/common/logging",
+        "@com_google_xls//xls/common/status:status_macros",
+    ],
+)
+
+#compile and link google tests.
+
+cc_test(
+    name = "shortest_path_test",
+    srcs = ["shortest_path_test.cc"],
+    deps = [
+        ":shortest_path",
+        ":create_cost_vector",
+        "@com_google_googletest//:gtest_main",
+        "@com_google_xls//xls/common/status:matchers",
+    ],
+)
