@@ -17,9 +17,12 @@
 #include "shortest_path.h"
 
 #include "transpiler/data/cleartext_data.h"
-#include "transpiler/examples/shortest_path/compute_shortest_path_cleartext.h"
-#include "transpiler/examples/shortest_path/compute_shortest_path_cleartext.types.h"
 #include "xls/common/logging/logging.h"
+#ifdef USE_YOSYS_INTERPRETED_CLEARTEXT
+#include "transpiler/examples/shortest_path/compute_shortest_path_yosys_interpreted_cleartext.h"
+#else
+#include "transpiler/examples/shortest_path/compute_shortest_path_cleartext.h"
+#endif
 
 using namespace std;
 

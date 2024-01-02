@@ -43,12 +43,9 @@ int main(int argc, char** argv) {
   bool simpleCostFlag;
   bool constrainedFlag;
   bool verbose;
-  unsigned int n_neighbors(MAX_NEIGHBORS);
   std::string out_fname;
   
-  parse_inputs(argc, argv, simpleCostFlag, constrainedFlag, verbose, n_neighbors, out_fname);
-
-  //note currently n_neighbors is not used 
+  parse_inputs(argc, argv, simpleCostFlag, constrainedFlag, verbose, out_fname);
 
   // create inputs.
   unsigned int ignoreId(85); // ID to be ignored in the constrained case

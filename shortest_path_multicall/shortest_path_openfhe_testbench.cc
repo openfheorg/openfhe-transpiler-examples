@@ -56,7 +56,6 @@ int main(int argc, char** argv) {
   bool simpleCostFlag;
   bool constrainedFlag;
   bool verbose;
-  unsigned int n_neighbors(MAX_NEIGHBORS);
   std::string out_fname;
   lbcrypto::BINFHE_PARAMSET param_set;
   std::string param_set_name;
@@ -66,10 +65,8 @@ int main(int argc, char** argv) {
 
   parse_inputs(argc, argv, simpleCostFlag, constrainedFlag, verbose,
                param_set, param_set_name,
-               n_neighbors, out_fname);
+               out_fname);
   
-  //note currently n_neighbors is not used
-
   ofstream outfile; //file for logging output
   ofstream sizeoutfile; //file for logging size output
   try {

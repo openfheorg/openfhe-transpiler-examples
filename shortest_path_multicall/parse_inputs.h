@@ -24,6 +24,6 @@ void parse_inputs(int argc, char **argv, bool &simple_cost_flag,
                   lbcrypto::BINFHE_PARAMSET &param_set,
 				  std::string &param_set_name, 
 #endif
-                  unsigned int n_neighbors, std::string &out_fname);
+                  std::string &out_fname);
 
 #endif //PARSE_INPUTS_H

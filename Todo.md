@@ -6,11 +6,15 @@
 
 - [ ] Verify all three versions runs in new repo
 
-working on shortest_path_multicall
-why is n_neighbors not used?
 
 
-## private_set
+working on shortest_path_multicall -- done
+working on shortest_path_singlecall -- done
+
+removing n_neighbors. 
+
+
+## private_set [done]
 
 - [x ] Verify all versions runs in new repo
 

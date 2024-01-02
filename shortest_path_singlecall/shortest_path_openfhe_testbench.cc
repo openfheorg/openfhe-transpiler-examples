@@ -23,13 +23,10 @@
 
 
 #ifdef USE_INTERPRETED_OPENFHE
-#include "transpiler/examples/shortest_path/and_test_interpreted_openfhe.h"
 #include "transpiler/examples/shortest_path/compute_shortest_path_interpreted_openfhe.h"
 #elif defined(USE_YOSYS_INTERPRETED_OPENFHE)
-#include "transpiler/examples/shortest_path/and_test_yosys_interpreted_openfhe.h"
 #include "transpiler/examples/shortest_path/compute_shortest_path_yosys_interpreted_openfhe.h"
 #else
-#include "transpiler/examples/shortest_path/and_test_openfhe.h"
 #include "transpiler/examples/shortest_path/compute_shortest_path_openfhe.h"
 #endif
 
@@ -97,25 +94,6 @@ int main(int argc, char** argv) {
 
   std::cout << "Completed key generation." << std::endl;
 
-  bool a(true);
-  bool b(true);
-  
-  //baseline timing for a simple and gate
-  auto CT_a = OpenFhe<bool>::Encrypt(a, cc, sk);
-  auto CT_b = OpenFhe<bool>::Encrypt(b, cc, sk);
-  auto CT_c = OpenFhe<bool>::Encrypt(!(a&b), cc, sk);
-
-  cout << "Encryption done" << endl;
-  cout << "\t\t\t\t\tand_test:" << endl;
-  
-  tic();
-  XLS_CHECK_OK(and_test( CT_c, CT_a, CT_b, cc));
-  toc();
-  cout << "\t\t\t\t\tComputation done" << endl;
-  bool outC = CT_c.Decrypt(sk);
-
-  cout << "a: " << a << " b: " << b << " c: " << (a & b) << " c output: " << outC <<endl;;
-  
   // create inputs.
 
   // create RNG

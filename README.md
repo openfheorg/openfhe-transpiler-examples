@@ -91,33 +91,94 @@ time.
 This is an implementation of a simplified BGP protocol. There is no
 I/O, only computation is benchmarked.
 
+The computing node receives information from a set of upstream
+neighbor nodes containing path cost information. The computing node
+selects the minimum cost vector, adds themselves to it, and then sends
+the output downstream, all encrypted.
+
+Pseudo code:
+
+1. The compute node gets an encrypted cost and encrypted path-id structure from each upstream neighbor. The structure contains : path cost, path length, vector of node IDs with the neighbor at the last element of the vector.
+
+2. Create new vector of encrypted costs of all neighbors.
+
+3. Find index of the minimum cost vector.
+
+4. Loop over all structures (loop variable is `this_index`):
+
+4.1 Generate Boolean variable `test` such that `test = (this index == encrypted index)`. 
+
+4.2 Multiply all values in the struct by `test` and add struct to an
+accumulated updated version of the struct.  Thus, the accumulated
+struct contains only the selected path cost, path length and vector
+of IDs (note zero is considered an invalid null node).
+
+5. Then the compute node adds their cost to the final cost, increments the vector length and inserts their id at the end of the vector. 
+
+6. The compute node passes the new encrypted cost and path id struct downstream (this is implied).
+
+the `-c` constraint flag when true, sets a particular node ID's cost
+to maximum, preventing it from being included in the computation. This
+node number is set using `ignoreId` in the main prgraam.
+
 Shortest path was the first project we built using the transpiler, and
 we learned alot about what works and what does not. Initially we tried
 putting the entire encrypted algorithm into one set of functions
 (`shortest_path_singlecall`) which led to huge circuits that take a
-long time to build and execute. We then split it into multiple calls
+long time to build and execute. This is primarily due to double loop unrolling. 
+
+We then split it into multiple calls, 
 (`shortest_path_multicall`), which builds faster, but still exhibits
-combinatorial explosions in the loop circuits. Our final version
+combinatorial explosions in the single loop unrolled circuits. Our final version
 iterates over encrypted function calls in a software loop (`shortest_path_iterative`)
 
-`shortest_path_singlecall` is a single call version -- it generates
-huge circuits that take a long time. Provided only for pedagogical purposes.
+`shortest_path_singlecall` is a single call version where all
+computation on the input data is done in one encrypted function. It
+generates huge circuits that take a long time. Provided only for
+pedagogical purposes.
 
-`shortest_path_multicall` is a multiple call version, which still has poor runtime performance. 
+There is one encrypted function `compute_shortest_path()`.
 
-`shortest_path_iterative` is the final version which
-combines a software control loop with encrypted function calls. It is the most efficient way to work. 
+`shortest_path_multicall` is a multiple call version, which still has
+poor runtime performance. Again provided only for pedagogical
+purposes.
+
+The following encrypted functions are used:
+
+`create_cost_vector()` and 
+`create_constrained_cost_vector()` build the initial encrypted input.
+
+`vector_min_index()`: idenifies the index of the minimum element of a vector. 
+
+Shortest path: `select_path()`: select lowest cost of two paths.
+
+Path advertisement: `update_path()`: adds our nodeID and cost to selected path.
+
+
+
+`shortest_path_iterative` is the final version developed which
+combines a software control loop with encrypted function calls. It is
+the most efficient way to work. The following descriptions refer only to this version. 
 
 One of these directories should be linked to `shortest_path` in the transpiler
 directory.
 
 Then one can run from the `transpiler/examples` directory using commands such as 
 
-`bazel run //transpiler/examples/shortest_path:shortest_path_yosys_interpreted_openfhe_testbench -- -v -m GINX -o /home/palisade/Documents/transpiler-experiments/shortest_path_iterative/TOY-GINX.csv`
+`bazel run //transpiler/examples/shortest_path:shortest_path_yosys_interpreted_openfhe_testbench -- -v  -o {full path to output directory}/output.csv`
 
-Note running the following will list all possible command line arguments
+the `-c` constraint flag when true, sets the local node's path cost to maximum.
 
+The output files log runtimes and sizes of ciphertexts of the OpenFHE version. 
+
+Note running the following will list all possible command line
+arguments
+
+`bazel run //transpiler/examples/shortest_path:shortest_path_cleartext_testbench -- -h`
 `bazel run //transpiler/examples/shortest_path:shortest_path_yosys_interpreted_openfhe_testbench -- -h`
+
+The number of simulated nodes in the process is set in
+`shortest_paths.h`. Increasing this will increase compile and runtime.
 
 
 ## Private Set Processing Along a Path [verified]
