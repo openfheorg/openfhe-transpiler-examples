@@ -2,17 +2,9 @@
 
 # General 
 
-## Shortest Path
+## Shortest Path [done]
 
-- [ ] Verify all three versions runs in new repo
-
-
-
-working on shortest_path_multicall -- done
-working on shortest_path_singlecall -- done
-
-removing n_neighbors. 
-
+- [x] Verify all three versions runs in new repo
 
 ## private_set [done]
 

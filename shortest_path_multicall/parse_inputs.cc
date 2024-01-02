@@ -40,7 +40,7 @@ void parse_inputs(int argc, char **argv, bool &simple_cost_flag,
   param_set_name = "TOY";
 #endif    
 
-  while ((opt = getopt(argc, argv, "n:o:p:svh")) != -1) {
+  while ((opt = getopt(argc, argv, "co:p:svh")) != -1) {
     switch (opt) {
     case 'c':
       constrained_flag = true;

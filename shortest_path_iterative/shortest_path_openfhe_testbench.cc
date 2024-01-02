@@ -53,9 +53,7 @@ int main(int argc, char** argv) {
   unsigned int n_neighbors(MAX_NEIGHBORS);
   std::string out_fname;
   lbcrypto::BINFHE_PARAMSET param_set(TOY);
-  lbcrypto::BINFHE_METHOD method(AP);
   std::string param_set_name("TOY");
-  std::string method_name("AP");
   
   TimeVar t;					// for timing
   TimeVar tTot;					// for timing
@@ -66,7 +64,7 @@ int main(int argc, char** argv) {
   unsigned int n_constrain(0);
   
   parse_inputs(argc, argv, simpleCostFlag, constrainedFlag, verbose,
-               param_set, method, param_set_name, method_name,
+               param_set, param_set_name, 
                n_neighbors, out_fname);
   
   
@@ -83,18 +81,18 @@ int main(int argc, char** argv) {
     cerr << out_fname+".siz" << " file open exception was caught, with message '" << e.what() << "'\n";
   }
 
-  outfile << "\"param\",\"method\",\"constrainedFlag\",\"simpleCostFlag\",\"n_neighbors\",\"constrain_path\",\"select_path\",\"Path advertisement\" " << endl;
+  outfile << "\"param\",\"constrainedFlag\",\"simpleCostFlag\",\"n_neighbors\",\"constrain_path\",\"select_path\",\"Path advertisement\" " << endl;
 
-  outfile << param_set_name << "," << method_name << "," << constrainedFlag << "," << simpleCostFlag << "," << n_neighbors << ",";
+  outfile << param_set_name << "," << "," << constrainedFlag << "," << simpleCostFlag << "," << n_neighbors << ",";
 
-  sizeoutfile << "Using BinFHE "<<param_set_name <<", " << method_name <<endl;
+  sizeoutfile << "Using BinFHE "<<param_set_name << endl;
   //generate FHE context and keys 
   if (verbose) {
-    cout<< "Using BinFHE "<<param_set_name <<", " << method_name <<endl;
+    cout<< "Using BinFHE "<<param_set_name  <<endl;
   }
 
   auto cc = BinFHEContext();
-  cc.GenerateBinFHEContext(param_set, method); //strictly for debugging
+  cc.GenerateBinFHEContext(param_set); //strictly for debugging
 
   std::cout << "Generating the secret key..." << std::endl;
   auto sk = cc.KeyGen();		// Generate the secret key
@@ -147,7 +145,6 @@ int main(int argc, char** argv) {
     sizeoutfile << "1 bit CT size is " << CTsize  << " bytes" << std::endl;
   }
 
-  cout << "got here"<<endl;
   // create inputs.
   unsigned int ignoreId(85); // ID to be ignored in the constrained case
 
@@ -224,8 +221,10 @@ int main(int argc, char** argv) {
 
 	cout << " time: " << execTime/1000.0 << " s" << std::endl;
 	auto dec_oldpath = CT_oldpath.Decrypt(sk);	
-	cout << "DEBUG: selected path cost is " << dec_oldpath.cost <<endl;
-	cout << "DEBUG: selected path length is " << (unsigned int) dec_oldpath.pathLength <<endl;
+	if (verbose) {
+	  cout << "selected path cost is " << dec_oldpath.cost <<endl;
+	  cout << "selected path length is " << (unsigned int) dec_oldpath.pathLength <<endl;
+	}
 	for (auto j = 0; j< MAX_PATH_LEN; j++){
 	  cout << dec_oldpath.path[j] << " ";
 	}

@@ -86,7 +86,7 @@ generally makes smaller circuits and b) yosys interpreted will execute
 gates in parallel across all available cores, for a much faster run
 time.
 
-## shortest_path [not yet verified]
+## shortest_path [verified]
 
 This is an implementation of a simplified BGP protocol. There is no
 I/O, only computation is benchmarked.
@@ -155,7 +155,6 @@ Shortest path: `select_path()`: select lowest cost of two paths.
 Path advertisement: `update_path()`: adds our nodeID and cost to selected path.
 
 
-
 `shortest_path_iterative` is the final version developed which
 combines a software control loop with encrypted function calls. It is
 the most efficient way to work. The following descriptions refer only to this version. 
@@ -177,8 +176,28 @@ arguments
 `bazel run //transpiler/examples/shortest_path:shortest_path_cleartext_testbench -- -h`
 `bazel run //transpiler/examples/shortest_path:shortest_path_yosys_interpreted_openfhe_testbench -- -h`
 
-The number of simulated nodes in the process is set in
+
+
+To run the openFHE versions you may need to copy/link the following libraries to `private_set\bin` 
+
+```
+libOPENFHEbinfhe.so
+libOPENFHEbinfhe.so.1
+libOPENFHEcore.so
+libOPENFHEcore.so.1
+libOPENFHEpke.so
+libOPENFHEpke.so.1
+```
+
+or set `LD_LIBRARY_PATH` to the appropriate location. You may need to
+install the equivalent version of openFHE on your system.
+
+The number of simulated nodes in the process for singlecall and multicall versoins is set in
 `shortest_paths.h`. Increasing this will increase compile and runtime.
+
+Note in the interative version, one can set the number of nodes at
+runtime by using the `-n` flag. The maximum number of nodes is still
+set in `shortest_paths.h`.
 
 
 ## Private Set Processing Along a Path [verified]
