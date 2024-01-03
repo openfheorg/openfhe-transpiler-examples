@@ -22,9 +22,7 @@
 void parse_inputs(int argc, char **argv, bool &verbose,
 #ifdef USE_OPENFHE
                   lbcrypto::BINFHE_PARAMSET &param_set,
-				  lbcrypto::BINFHE_METHOD &method,
 				  std::string &param_set_name,
-				  std::string &method_name,
 #endif
                   std::string &out_fname);
 

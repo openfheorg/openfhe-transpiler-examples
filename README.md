@@ -19,13 +19,6 @@ This work is supported by DARPA through contract number HR001120C0157.
 This work was conducted by Duality Technologies as a subcontractor to
 USC Information Sciences Institute.
 
-## Work in Progress Warning.
-
-This repostiory is being migrated from a private repo, an we are step
-by step verifying correct operation. each example will not if it has
-not been verified yet. You may try these but be warned that they may
-not work yet.
-
 ## Interacting with the Google Transpiler. 
 
 Note all this code has only been run under linux. Windows is
@@ -86,7 +79,7 @@ generally makes smaller circuits and b) yosys interpreted will execute
 gates in parallel across all available cores, for a much faster run
 time.
 
-## shortest_path [verified]
+## shortest_path 
 
 This is an implementation of a simplified BGP protocol. There is no
 I/O, only computation is benchmarked.
@@ -200,7 +193,7 @@ runtime by using the `-n` flag. The maximum number of nodes is still
 set in `shortest_paths.h`.
 
 
-## Private Set Processing Along a Path [verified]
+## Private Set Processing Along a Path
 
 This is an implementation of private set processing along a chain of
 network nodes. It performs intersection or union on a vector of data
@@ -282,11 +275,22 @@ or set `LD_LIBRARY_PATH` to the appropriate location. You may need to
 install the equivalent version of openFHE on your system.
 
 
-## dijkstra [not yet verified]
+## Dijkstra
 
-This is an implementation of the Dijkstra shortest path
-algorithm. Note this code has a hardwired network, and hardwired
-source node and is basically a proof of concept. Note in the future we will release a dijkstra version that can run with 100s of nodes.
+This is an implementation of the Dijkstra shortest path algorithm,
+originally published // from
+https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/
+. The orignal dijkstra code is contributed by shivanisinghss2110. Note
+this code has a hardwired network, and hardwired source node and is
+basically a proof of concept to show that network algorithms can be
+executed in encrypted form using the transplier. Note in the future we
+will release a version that can run with hundreds of nodes. 
+
+This version contains three encrypted functions, two of which are run
+in a software loop over all verticies. Those two have unrolled loops,
+so that puts a practical limit on the size of the network that can be
+processed.
+
 
 # Todo
 

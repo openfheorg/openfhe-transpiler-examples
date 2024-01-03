@@ -218,16 +218,14 @@ int main(int argc, char** argv)
 #endif
   
   lbcrypto::BINFHE_PARAMSET param_set(TOY);
-  lbcrypto::BINFHE_METHOD method(AP);
   std::string param_set_name("TOY");
-  std::string method_name("AP");
   
   TimeVar t;					// for timing
   double execTime(0.0);
   string out_fname("");
   bool verbose(false);
   parse_inputs(argc, argv, verbose,
-               param_set, method, param_set_name, method_name,
+               param_set, param_set_name,
                out_fname);
   
   ofstream outfile; //file for logging output
@@ -243,18 +241,18 @@ int main(int argc, char** argv)
     cerr << out_fname+".siz" << " file open exception was caught, with message '" << e.what() << "'\n";
   }
 
-  outfile << "\"param\",\"method\",\"Dijkstra\" " << endl;
+  outfile << "\"param\",\"Dijkstra\" " << endl;
 
-  outfile << param_set_name << "," << method_name << ",";
+  outfile << param_set_name << ",";
 
-  sizeoutfile << "Using BinFHE "<<param_set_name <<", " << method_name <<endl;
+  sizeoutfile << "Using BinFHE "<<param_set_name  << endl;
   //generate FHE context and keys 
   if (verbose) {
-    cout<< "Using BinFHE "<<param_set_name <<", " << method_name <<endl;
+    cout<< "Using BinFHE "<<param_set_name << endl;
   }
 
   BinFHEContext cc = BinFHEContext();
-  cc.GenerateBinFHEContext(param_set, method); //strictly for debugging
+  cc.GenerateBinFHEContext(param_set); //strictly for debugging
 
   std::cout << "Generating the secret key..." << std::endl;
   LWEPrivateKey sk = cc.KeyGen();		// Generate the secret key

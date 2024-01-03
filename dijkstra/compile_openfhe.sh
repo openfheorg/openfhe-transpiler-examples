@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for target in yosys_interpreted_openfhe
+for target in openfhe yosys_interpreted_openfhe
 do
 	echo ===================================
 	echo dijkstra_${target}_testbench
