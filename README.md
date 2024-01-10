@@ -1,11 +1,15 @@
 # Duality Labs Transpiler Experiments 
 
-This body of code contains examples of encrypted network measurement
+This repository contains examples of encrypted network measurement
 and control fuctions developed under DARPA funding for the I2O Open,
 Programmable, Secure 5G (OPS5G) program.  They represent distributed
 set operations that would be performed among a group of nodes in a
 path, a simple BGP-like shortest path calculation, and a dijkstra
 shortest path computation for a small network.
+
+Additionally, the `aes` subdirectory contains examples of AES running
+under FHEW and the google transpiler developed under DARPA funding for
+the Data Protection in Virtual Environments (DPRIVE) program.
 
 ## Acknowledgements and Distribution 
 
@@ -15,8 +19,12 @@ opinions, and/or findings expressed are those of the author(s) and
 should not be interpreted as representing the official views or
 policies of the Department of Defense or the U.S. Government.
 
-This work is supported by DARPA through contract number HR001120C0157. 
-This work was conducted by Duality Technologies as a subcontractor to
+The Network Measurement/Control Sub-projects work is supported by
+DARPA through contract number HR0011-21-9-0003.  This work was
+conducted by Duality Technologies as the Prime contractor.
+
+The AES  work is supported by DARPA through contract number HR001120C0157. 
+That work was conducted by Duality Technologies as a subcontractor to
 USC Information Sciences Institute.
 
 ## Interacting with the Google Transpiler. 
@@ -291,6 +299,10 @@ in a software loop over all verticies. Those two have unrolled loops,
 so that puts a practical limit on the size of the network that can be
 processed.
 
+# AES
+
+Please [see the README_AES.md file](aes/README_AES.md) in the `aes`
+directory for full details.
 
 # Todo
 
